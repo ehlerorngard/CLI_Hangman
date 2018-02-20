@@ -1,22 +1,32 @@
 // Letter.js: Contains a constructor, Letter. This constructor should be able to either display an underlying character or a blank placeholder (such as an underscore), depending on whether or not the user has guessed the letter. That means the constructor should define:
 var Letter = function(letter, binGuessed) {
 	this.letter = letter;
-	this.binGuessed = false;
-	this.charVisible = function() {
-
+	this.binGuessed = binGuessed;
+	this.charVisible = function(letter, binGuessed) {
+		if (binGuessed === true) {
+			var letra = this.letter;
+			return letra;
+		}
+		else if (binGuessed === false) {
+			return "_";
+		}
 	}
-	this.checkForMatch = function(letter) {
-		if (print === true) {
-	        wordView += this.letter;
+	this.checkForMatch = function(guess, letter) {
+		this.guess = guess;
+		this.letter = letter;
+		if (this.guess === this.letter) {
+			binGuessed = true;
+	        return binGuessed;
 		}
 		else {
-	        wordView += "&nbsp;_&nbsp;";
+			binGuessed = false;
+	        return binGuessed;
 		}
 	}
 }
 
 
-module.exports(Letter);
+module.exports = Letter;
 
 // A string value to store the underlying character for the letter
 // A boolean value that stores whether that letter has been guessed yet
