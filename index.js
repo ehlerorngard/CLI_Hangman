@@ -5,9 +5,9 @@ var Word = require('word.js');
 
 
 var theWord = null;
-guessesLeft = 0;
+var guessesLeft = 16;
 totalGuesses = 0;
-wins = 0;
+var points = 0;
 
 var wordsForGuessing = ["maple", "oak", "hickory", "beech", "aspen", "spruce", "pine", "chestnut", "fir", "redwood", "tsuga"];
 
@@ -18,13 +18,18 @@ function takeAguess() {
 		name: "theGuess"
 	}]).then(function(input) {
 		// theWord.checkForMatch(input.theGuess);
-		var boule = theWord.buildWord(input.theGuess);
-		if (boule) {console.log('bouleYAAAHH!!')}
-		else if (boule === false) {
+		var rez = theWord.buildWord(input.theGuess);
+		if (rez === 0) {console.log('bouleYAAAHH!!')}
+			points++;
+			console.log("You have " + points + " total points.");
+		else if (rez === 1) {
 			guessesLeft--;
 			console.log('You have ' + guessesLeft + ' guesses left.');
-
 		}
+		else if (rez === 2) {
+			console.log("Uhh.. you already guess that..");
+		}
+		
 	});
 };
 

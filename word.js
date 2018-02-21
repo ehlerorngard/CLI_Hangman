@@ -1,8 +1,8 @@
+var chalk = require('chalk');
 var Letter = require('letter.js');
 
 
 
-letterGuessed: null,
 var matchedLetters = [];
 var lettersGuessedWrong = [];
 
@@ -10,33 +10,47 @@ var theWordAsArray = [];
 
 ["o", "a", "k"];
 
-var Word = function(word){
+var Word = function(word) {
 	this.theWordAsArray = word.split("");
-
+	this.matchedLetters = [];
+	this.lettersGuessedWrong = [];
 	this.buildWord = function(guess) {
-		var hasBinGuessed = false;
-		var visibleWord = "";
-		this.guess = guess;
-		for (i = 0; i < this.theWordAsArray; i++) {
-			var theLetter = this.theWordAsArray[i];
-			var leTTer = new Letter(theLetter);
-			var guessed = processGuess(this.guess, theLetter);
-			if (guessed === true) {
-				hasBinGuessed = true;
+		if ((matchedLetters.indexOf(guess) !== -1) || (lettersGuessedWrong.indexOf(guess) !== -1)) {
+			return 2;
+		}
+		else {
+			var madeCorrectGuess = false;
+			var isaMatch = false;
+			var visibleWord = "";
+			this.guess = guess;
+			for (i = 0; i < this.theWordAsArray; i++) {
+				isaMatch = false;
+				var theLetter = this.theWordAsArray[i];
+				var ;
+				var leTTer = new Letter(theLetter, );
+				var guessed = processGuess(this.guess, theLetter);
+				if (guessed === true) {
+					isaMatch = true;
+					madeCorrectGuess = true;
+				}
+				var displayedCharacter = leTTer.charVisible(theLetter, isaMatch) += "&nbsp;";
+				visibleWord += displayedCharacter;
 			}
-			if 
-			var displayedCharacter = leTTer.charVisible(theLetter, ) += "&nbsp;";
-			visibleWord = visibleWord += displayedCharacter;
-
-		}
-		console.log(visibleWord);
-		var wrongLetters = lettersGuessedWrong.join(" ");
-		console.log("letters guessed wrong: \n" + wrongLetters + "\n");
-		if (hasBinGuessed === true) {
-
-		}
-		else if (hasBinGuessed === false) {
-			return;
+			if (madeCorrectGuess === true) {
+				console.log(chalk.cyan("nice guess!  it's a match!"));
+				console.log(visibleWord);
+				var wrongLetters = lettersGuessedWrong.join(" ");
+				console.log("letters guessed wrong: \n" + wrongLetters + "\n");
+				return 0;
+			}
+			else if (madeCorrectGuess === false) {
+				console.log(chalk.red("Sorry...  your guess is no match for this word..."));
+				console.log(visibleWord);
+				lettersGuessedWrong.push(guess);
+				var wrongLetters = lettersGuessedWrong.join(" ");
+				console.log(chalk.yellow("letters guessed wrong: \n" + wrongLetters + "\n"));
+				return 1;
+			}
 		}
 	}
 	this.processGuess = function(guess, letter) {
@@ -52,17 +66,8 @@ var Word = function(word){
 		else if (matched === false) {
 			return guessedCorrectly;
 		}
-
-
-		if (lettersGuessedWrong.indexOf(this.guess) !== -1) {
-	
-			}
-			else {
-
-		}
-		letter.checkForMatch(guess, letter, match, same);
-
 	}
+}
 
 // Word.js: Contains a constructor, Word that depends 
 // on the Letter constructor. This is used to create 

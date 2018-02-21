@@ -5,9 +5,11 @@ var Letter = function(letter, binGuessed) {
 	this.charVisible = function(letter, binGuessed) {
 		if (binGuessed === true) {
 			var letra = this.letter;
+			console.log(letra);
 			return letra;
 		}
 		else if (binGuessed === false) {
+			console.log("_");
 			return "_";
 		}
 	}
@@ -16,6 +18,7 @@ var Letter = function(letter, binGuessed) {
 		this.letter = letter;
 		if (this.guess === this.letter) {
 			binGuessed = true;
+			console.log(guess + " equals " + letter);
 	        return binGuessed;
 		}
 		else {
@@ -25,6 +28,8 @@ var Letter = function(letter, binGuessed) {
 	}
 }
 
+var piggy = new Letter("c", false);
+piggy.charVisible("a", true);
 
 module.exports = Letter;
 
