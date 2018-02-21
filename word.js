@@ -1,46 +1,83 @@
 var chalk = require('chalk');
-var Letter = require('letter.js');
-
-
+var Letter = require('./letter.js');
 
 var matchedLetters = [];
 var lettersGuessedWrong = [];
-
 var theWordAsArray = [];
-
-["o", "a", "k"];
+var visibleWord = "";
+var leTTer = null;
 
 var Word = function(word) {
-	this.theWordAsArray = word.split("");
-	this.matchedLetters = [];
-	this.lettersGuessedWrong = [];
-	this.buildWord = function(guess) {
+	theWordAsArray = word.split("");
+	matchedLetters = [];
+	lettersGuessedWrong = [];
+	var verifyGuess = function(guess, letter, error) {
+		if (error) throw error;
+		var guessedCorrectly = false;
+		this.guess = guess;
+		this.letter = letter;
+		var matched = leTTer.checkForMatch(this.guess, this.letter);
+		if (matched === true) {
+			guessedCorrectly = true;
+			return guessedCorrectly;
+		}
+		else if (matched === false) {
+			return guessedCorrectly;
+		}
+	};
+	this.processAguess = function(guess) {
+		// checks if the letter has already been guessed
 		if ((matchedLetters.indexOf(guess) !== -1) || (lettersGuessedWrong.indexOf(guess) !== -1)) {
 			return 2;
 		}
+		// otherwise if it's a legitimate/new guess...
 		else {
 			var madeCorrectGuess = false;
 			var isaMatch = false;
-			var visibleWord = "";
+			var digits = 0;
+			visibleWord = "";
 			this.guess = guess;
-			for (i = 0; i < this.theWordAsArray; i++) {
+			// cycle through each letter of the current word,
+			// both to check for a match AND to build the visible string
+			for (i = 0; i < theWordAsArray.length; i++) {
 				isaMatch = false;
-				var theLetter = this.theWordAsArray[i];
-				var ;
-				var leTTer = new Letter(theLetter, );
-				var guessed = processGuess(this.guess, theLetter);
+				var theLetter = theWordAsArray[i];
+				leTTer = new Letter(theLetter, false);
+				var guessed = verifyGuess(this.guess, theLetter, null);
 				if (guessed === true) {
 					isaMatch = true;
 					madeCorrectGuess = true;
+					digits++;
 				}
-				var displayedCharacter = leTTer.charVisible(theLetter, isaMatch) += "&nbsp;";
+				else if ((guessed === false) && (matchedLetters.indexOf(theWordAsArray[i])) !== -1) {
+					isaMatch = true;
+					digits++;
+				}
+				else if (guessed === false) { 
+					isaMatch = false;
+				}
+			// build the visible string of the word, using Letter and the boolean denoting a match
+				var displayedCharacter = leTTer.charVisible(theLetter, isaMatch);
+				displayedCharacter += " ";
 				visibleWord += displayedCharacter;
 			}
-			if (madeCorrectGuess === true) {
-				console.log(chalk.cyan("nice guess!  it's a match!"));
+			// if a letter was guessed correctly AND it was the final letter to guess in the word...
+			if ((madeCorrectGuess === true) && (digits === theWordAsArray.length)) {
+				console.log(chalk.magenta("nice guess!  it's a match!"));
 				console.log(visibleWord);
 				var wrongLetters = lettersGuessedWrong.join(" ");
-				console.log("letters guessed wrong: \n" + wrongLetters + "\n");
+				console.log(chalk.gray("letters guessed wrong: "));
+				console.log(chalk.yellow(wrongLetters));
+				return 3;
+			}
+			// otherwise if a letter was guessed right but more remain in the word
+			else if (madeCorrectGuess === true) {
+				console.log(chalk.cyan("nice guess!  it's a match!"));
+				console.log(visibleWord);
+				matchedLetters.push(this.guess);
+				var wrongLetters = lettersGuessedWrong.join(" ");
+				console.log(chalk.gray("letters guessed wrong: "));
+				console.log(chalk.yellow(wrongLetters));
 				return 0;
 			}
 			else if (madeCorrectGuess === false) {
@@ -48,47 +85,13 @@ var Word = function(word) {
 				console.log(visibleWord);
 				lettersGuessedWrong.push(guess);
 				var wrongLetters = lettersGuessedWrong.join(" ");
-				console.log(chalk.yellow("letters guessed wrong: \n" + wrongLetters + "\n"));
+				console.log(chalk.gray("letters guessed wrong: "));
+				console.log(chalk.yellow(wrongLetters));
 				return 1;
 			}
 		}
-	}
-	this.processGuess = function(guess, letter) {
-		var guessedCorrectly = false;
-		this.guess = guess;
-		this.letter = letter;
-		var matched = leTTer.checkForMatch(this.guess, this.letter);
-		if (matched === true) {
-			matchedLetters.push(this.guess);
-			guessedCorrectly = true;
-			return guessedCorrectly;
-		}
-		else if (matched === false) {
-			return guessedCorrectly;
-		}
-	}
-}
+	};
 
-// Word.js: Contains a constructor, Word that depends 
-// on the Letter constructor. This is used to create 
-// an object representing the current word the user is 
-// attempting to guess. That means the constructor 
-// should define:
-// 
-
-// An array of new Letter objects representing the 
-// letters of the underlying word
-
-// A function that returns a string representing 
-// the word. This should call the function on each 
-// letter object (the first function defined in Letter.js) 
-// that displays the character or an underscore 
-// and concatenate those together.
-
-// A function that takes a character as an argument 
-// and calls the guess function on each 
-// letter object (the second function defined in Letter.js)
-
-
+};
 
 module.exports = Word;

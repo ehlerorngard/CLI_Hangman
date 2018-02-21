@@ -1,14 +1,9 @@
 var inquirer = require('inquirer');
-var Word = require('word.js');
-
-
-
+var Word = require('./word.js');
 
 var theWord = null;
-var guessesLeft = 16;
-totalGuesses = 0;
+var guessesLeft = 12;
 var points = 0;
-
 var wordsForGuessing = ["maple", "oak", "hickory", "beech", "aspen", "spruce", "pine", "chestnut", "fir", "redwood", "tsuga"];
 
 function takeAguess() {
@@ -17,47 +12,59 @@ function takeAguess() {
 		message: "Guess a letter...",
 		name: "theGuess"
 	}]).then(function(input) {
-		// theWord.checkForMatch(input.theGuess);
-		var rez = theWord.buildWord(input.theGuess);
-		if (rez === 0) {console.log('bouleYAAAHH!!')}
+		var Guess = input.theGuess.toLowerCase();
+		var rez = theWord.processAguess(Guess);
+		if (rez === 0) {
+			console.log('bouleYAAAHH!!')
 			points++;
 			console.log("You have " + points + " total points.");
+			takeAguess();
+		}
 		else if (rez === 1) {
 			guessesLeft--;
 			console.log('You have ' + guessesLeft + ' guesses left.');
+			if (guessesLeft > 0) {
+				takeAguess();
+			}
+			else if (guessesLeft === 0) {
+				console.log("GAME OVER");
+			}
 		}
 		else if (rez === 2) {
-			console.log("Uhh.. you already guess that..");
+			console.log("Uhh.. you already guessed that..");
+			takeAguess();
+		}
+		else if (rez === 3) {
+			console.log("You got the word!!");
+			points++;
+			console.log("You have " + points + " total points.");
+			createWord();
 		}
 		
 	});
 };
 
 function createWord(){
-	var randex = Math.floor(Math.random() * wordsForGuessing.length);
-	var currentWord = wordsForGuessing[randex];
-	wordsForGuessing.splice(randex, randex+1);
-	theWord = new Word(currentWord);
-};
+	if (wordsForGuessing.length === 0) {
+		console.log("CONGRATULATIONS! You guessed all the words!");
+	}
+	else if (wordsForGuessing.length > 0) {	
+		var randex = Math.floor(Math.random() * wordsForGuessing.length);
+		var currentWord = wordsForGuessing[randex];
+		wordsForGuessing.splice(randex, 1);
+		theWord = new Word(currentWord);
+		var wordlength = currentWord.split("").length;
+		var blanks = "";
+		for (i = 0; i < wordlength; i++) {
+			blanks += "_ ";
+		}
+		console.log(blanks);
+		takeAguess();
+	}
+}
 
-
-
-updateGuesses = function(letter) {
-    // If the letter is not in the guessedLetters array, and the letter is not in the lettersOfTheWord array..
-    if ((this.guessedLetters.indexOf(letter) === -1) && (this.lettersOfTheWord.indexOf(letter) === -1)) {
-
-      // Add the letter to the guessedLetters array.
-      this.guessedLetters.push(letter);
-
-      // Decrease guesses by one.
-      this.guessesLeft--;
-
-      // Update guesses remaining and guesses letters on the page.
-      document.querySelector("#guesses-remaining").innerHTML = this.guessesLeft;
-      document.querySelector("#guessed-letters").innerHTML =
-      this.guessedLetters.join(", ");
-    }
-  };
+// calls the function to start everything
+createWord();
 
 
 
