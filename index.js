@@ -15,7 +15,6 @@ function takeAguess() {
 		var Guess = input.theGuess.toLowerCase();
 		var rez = theWord.processAguess(Guess);
 		if (rez === 0) {
-			console.log('bouleYAAAHH!!')
 			points++;
 			console.log("You have " + points + " total points.");
 			takeAguess();
