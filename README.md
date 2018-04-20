@@ -26,6 +26,6 @@ npm install chalk
 
 Simply open the file 'index.js' using node in the terminal.  
 
-![](https://github.com/ehlerorngard/CLI_Hangman/hangman-in-action.png)
+![](https://github.com/ehlerorngard/CLI_Hangman/blob/master/hangman-in-action.png)
 
 Game hint:  the words are all trees ;)  
