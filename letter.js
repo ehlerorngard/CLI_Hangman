@@ -13,7 +13,7 @@ var Letter = function(letter, binGuessed) {
 		}
 	}
 	// checks to see if the guess and the letter of the word we're 
-	// presently looking at are a match
+	// presently addressing are a match
 	this.checkForMatch = function(guess, letter) {
 		this.guess = guess;
 		this.letter = letter;
