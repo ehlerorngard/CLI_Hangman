@@ -1,4 +1,4 @@
-# HangmanV2
+# Command-Line Hangman
 
 This is a simple hangman game built to be played in the console using node.js.  
 
