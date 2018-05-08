@@ -14,6 +14,10 @@ function takeAguess() {
 	}]).then(function(input) {
 		var Guess = input.theGuess.toLowerCase();
 		var rez = theWord.processAguess(Guess);
+
+		// Here a number 0 through 3 is returned in response
+		// and funcitons as an effective switch case,
+		// by which according subsequent action is determined: 
 		if (rez === 0) {
 			points++;
 			console.log("You have " + points + " total points.");
@@ -43,6 +47,9 @@ function takeAguess() {
 	});
 };
 
+// This function splices a word at random from the array of 
+// remaining possible words to be the next word in which
+// the player will guess letters:  
 function createWord(){
 	if (wordsForGuessing.length === 0) {
 		console.log("CONGRATULATIONS! You guessed all the words!");
