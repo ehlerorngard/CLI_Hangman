@@ -33,14 +33,13 @@ var Word = function(word) {
 		// otherwise if it's a legitimate/new guess...
 		else {
 			var madeCorrectGuess = false;
-			var isaMatch = false;
 			var digits = 0;
 			visibleWord = "";
 			this.guess = guess;
 			// cycle through each letter of the current word,
 			// both to check for a match AND to build the visible string
 			for (i = 0; i < theWordAsArray.length; i++) {
-				isaMatch = false;
+				var isaMatch = false;
 				var theLetter = theWordAsArray[i];
 				leTTer = new Letter(theLetter, false);
 				var guessed = verifyGuess(this.guess, theLetter, null);
@@ -53,9 +52,7 @@ var Word = function(word) {
 					isaMatch = true;
 					digits++;
 				}
-				else if (guessed === false) { 
-					isaMatch = false;
-				}
+
 			// build the visible string of the word, using Letter and the boolean denoting a match
 				var displayedCharacter = leTTer.charVisible(theLetter, isaMatch);
 				displayedCharacter += " ";
@@ -80,6 +77,7 @@ var Word = function(word) {
 				console.log(chalk.yellow(wrongLetters));
 				return 0;
 			}
+			// if the letter guessed was incorrect
 			else if (madeCorrectGuess === false) {
 				console.log(chalk.red("Sorry...  your guess is no match for this word..."));
 				console.log(visibleWord);
