@@ -15,7 +15,7 @@ function takeAguess() {
 		var Guess = input.theGuess.toLowerCase();
 		var rez = theWord.processAguess(Guess);
 
-		// Here a number 0 through 3 is returned in response
+		// Here, a number 0 through 3 is returned in response
 		// and funcitons as an effective switch case,
 		// by which according subsequent action is determined: 
 		if (rez === 0) {
